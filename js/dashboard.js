@@ -157,9 +157,9 @@ async function loadAllComplaints() {
    ============================================================ */
 function renderStats(complaints) {
   const total    = complaints.length;
-  const pending  = complaints.filter(c => c.status === 'PENDING').length;
-  const progress = complaints.filter(c => c.status === 'IN_PROGRESS').length;
-  const resolved = complaints.filter(c => c.status === 'RESOLVED').length;
+  const pending  = complaints.filter(c => c.status === 'Pending'     || c.status === 'PENDING').length;
+  const progress = complaints.filter(c => c.status === 'In Progress' || c.status === 'IN_PROGRESS').length;
+  const resolved = complaints.filter(c => c.status === 'Resolved'    || c.status === 'RESOLVED').length;
 
   document.getElementById('statsRow').innerHTML = `
     <div class="stat-card total">
@@ -185,9 +185,9 @@ function renderStats(complaints) {
    ADMIN — Pie Chart (Chart.js)
    ============================================================ */
 function renderChart(complaints) {
-  const pending  = complaints.filter(c => c.status === 'PENDING').length;
-  const progress = complaints.filter(c => c.status === 'IN_PROGRESS').length;
-  const resolved = complaints.filter(c => c.status === 'RESOLVED').length;
+  const pending  = complaints.filter(c => c.status === 'Pending'     || c.status === 'PENDING').length;
+  const progress = complaints.filter(c => c.status === 'In Progress' || c.status === 'IN_PROGRESS').length;
+  const resolved = complaints.filter(c => c.status === 'Resolved'    || c.status === 'RESOLVED').length;
 
   const ctx = document.getElementById('statusChart').getContext('2d');
 
@@ -265,6 +265,11 @@ document.getElementById('statusModal').addEventListener('click', function(e) {
    ============================================================ */
 function statusBadge(status) {
   const map = {
+    // backend stores "Pending" / "In Progress" / "Resolved" (mixed case)
+    'Pending':     ['badge-pending',  'Pending'],
+    'In Progress': ['badge-progress', 'In Progress'],
+    'Resolved':    ['badge-resolved', 'Resolved'],
+    // also handle uppercase variants just in case
     'PENDING':     ['badge-pending',  'Pending'],
     'IN_PROGRESS': ['badge-progress', 'In Progress'],
     'RESOLVED':    ['badge-resolved', 'Resolved']

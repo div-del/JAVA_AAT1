@@ -28,11 +28,13 @@ const API = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err || 'Invalid email or password');
+    const text = await res.text();
+    if (text === 'Invalid credentials' || !res.ok) {
+      throw new Error('Invalid email or password');
     }
-    return res.json(); // expects { id, name, email, role }
+    // Backend returns plain role string: "student" or "admin"
+    // We store email too so we can show it in the navbar
+    return { role: text.trim(), email };
   },
 
   /** POST /complaints — student submits */

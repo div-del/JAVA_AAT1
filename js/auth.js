@@ -49,8 +49,17 @@ async function handleLogin(e) {
   setLoading(btn, true);
 
   try {
-    const user = await API.login(email, password);
-    // user = { id, name, email, role }
+    const result = await API.login(email, password);
+    // result = { role, email }
+    // Try to get name from a previously registered session, else use email
+    const savedName = sessionStorage.getItem('pendingName') || email;
+    const user = {
+      id:    null,          // backend doesn't return id on login — complaint submit uses userId
+      name:  savedName,
+      email: result.email,
+      role:  result.role
+    };
+    sessionStorage.removeItem('pendingName');
     sessionStorage.setItem('user', JSON.stringify(user));
     window.location.href = 'dashboard.html';
   } catch (err) {
@@ -80,8 +89,11 @@ async function handleRegister(e) {
     await API.register(name, email, password, role);
     sucEl.textContent = '✅ Account created! You can now login.';
     sucEl.classList.remove('hidden');
+    // Save name so login can pick it up
+    sessionStorage.setItem('pendingName', name);
     document.getElementById('registerForm').reset();
-    // Auto-switch to login after 1.5s
+    // Pre-fill login email and switch tab
+    document.getElementById('loginEmail').value = email;
     setTimeout(() => showTab('login'), 1500);
   } catch (err) {
     errEl.textContent = err.message;
