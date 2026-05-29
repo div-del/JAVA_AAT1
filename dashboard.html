@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CollegeFixIt — Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-page">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span>🔧</span> CollegeFixIt
+    </div>
+    <div class="nav-right">
+      <span class="nav-user" id="navUser"></span>
+      <span class="nav-badge" id="navRole"></span>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- ===== STUDENT VIEW ===== -->
+  <main id="studentView" class="hidden">
+    <div class="container">
+
+      <!-- Submit Complaint -->
+      <section class="card">
+        <h2>📝 Submit a Complaint</h2>
+        <form id="complaintForm" onsubmit="submitComplaint(event)">
+          <div class="form-group">
+            <label for="compTitle">Title</label>
+            <input type="text" id="compTitle" placeholder="e.g. Broken projector in Room 204" required />
+          </div>
+          <div class="form-group">
+            <label for="compDesc">Description</label>
+            <textarea id="compDesc" rows="3" placeholder="Describe the issue in detail..." required></textarea>
+          </div>
+          <div id="complaintError" class="error-msg hidden"></div>
+          <div id="complaintSuccess" class="success-msg hidden"></div>
+          <button type="submit" class="btn-primary">Submit Complaint</button>
+        </form>
+      </section>
+
+      <!-- My Complaints -->
+      <section class="card">
+        <div class="section-header">
+          <h2>📋 My Complaints</h2>
+          <button class="btn-refresh" onclick="loadMyComplaints()">↻ Refresh</button>
+        </div>
+        <div id="myComplaintsLoader" class="loader-wrap">
+          <div class="loader"></div>
+        </div>
+        <div id="myComplaintsEmpty" class="empty-state hidden">
+          <span>😕</span>
+          <p>No complaints submitted yet.</p>
+        </div>
+        <div class="table-wrap">
+          <table id="myComplaintsTable" class="hidden">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="myComplaintsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== ADMIN VIEW ===== -->
+  <main id="adminView" class="hidden">
+    <div class="container">
+
+      <!-- Stats Row -->
+      <div class="stats-row" id="statsRow"></div>
+
+      <!-- Chart + Table Row -->
+      <div class="admin-grid">
+
+        <!-- Pie Chart -->
+        <section class="card chart-card">
+          <h2>📊 Complaints Overview</h2>
+          <div class="chart-wrap">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </section>
+
+        <!-- All Complaints Table -->
+        <section class="card table-card">
+          <div class="section-header">
+            <h2>📋 All Complaints</h2>
+            <button class="btn-refresh" onclick="loadAllComplaints()">↻ Refresh</button>
+          </div>
+          <div id="allComplaintsLoader" class="loader-wrap">
+            <div class="loader"></div>
+          </div>
+          <div id="allComplaintsEmpty" class="empty-state hidden">
+            <span>🎉</span>
+            <p>No complaints yet!</p>
+          </div>
+          <div class="table-wrap">
+            <table id="allComplaintsTable" class="hidden">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Student ID</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="allComplaintsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Status Update Modal -->
+  <div id="statusModal" class="modal-overlay hidden">
+    <div class="modal">
+      <h3>Update Status</h3>
+      <p id="modalComplaintTitle"></p>
+      <div class="form-group">
+        <label for="statusSelect">New Status</label>
+        <select id="statusSelect">
+          <option value="PENDING">Pending</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="RESOLVED">Resolved</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="confirmStatusUpdate()">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
