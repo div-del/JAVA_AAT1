@@ -792,3 +792,54 @@ tbody td strong {
   .nav-user { display: none; }
   .stats-row { grid-template-columns: 1fr 1fr; }
 }
+
+/* =============================================
+   WELCOME BANNER
+   ============================================= */
+
+.welcome-banner {
+  background: linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2));
+  border: 1px solid rgba(102,126,234,0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.8rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.welcome-banner h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+
+.welcome-banner p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* =============================================
+   SUMMARY STRIP
+   ============================================= */
+
+.summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.sum-item {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.sum-total    { background: rgba(102,126,234,0.15); color: #a5b4fc; border-color: rgba(102,126,234,0.3); }
+.sum-pending  { background: rgba(237,137,54,0.15);  color: #fbd38d; border-color: rgba(237,137,54,0.3); }
+.sum-progress { background: rgba(79,172,254,0.15);  color: #90cdf4; border-color: rgba(79,172,254,0.3); }
+.sum-resolved { background: rgba(72,187,120,0.15);  color: #9ae6b4; border-color: rgba(72,187,120,0.3); }

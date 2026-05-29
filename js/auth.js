@@ -50,17 +50,9 @@ async function handleLogin(e) {
 
   try {
     const result = await API.login(email, password);
-    // result = { role, email }
-    // Try to get name from a previously registered session, else use email
-    const savedName = sessionStorage.getItem('pendingName') || email;
-    const user = {
-      id:    null,          // backend doesn't return id on login — complaint submit uses userId
-      name:  savedName,
-      email: result.email,
-      role:  result.role
-    };
+    // result is now full user object { id, name, email, role }
     sessionStorage.removeItem('pendingName');
-    sessionStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(result));
     window.location.href = 'dashboard.html';
   } catch (err) {
     errEl.textContent = err.message;

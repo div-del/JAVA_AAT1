@@ -18,7 +18,7 @@ const API = {
       const err = await res.text();
       throw new Error(err || 'Registration failed');
     }
-    return res.json();
+    return res.json(); // now returns full user { id, name, email, role }
   },
 
   /** POST /auth/login */
@@ -28,13 +28,11 @@ const API = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    const text = await res.text();
-    if (text === 'Invalid credentials' || !res.ok) {
-      throw new Error('Invalid email or password');
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err || 'Invalid email or password');
     }
-    // Backend returns plain role string: "student" or "admin"
-    // We store email too so we can show it in the navbar
-    return { role: text.trim(), email };
+    return res.json(); // returns full user { id, name, email, role }
   },
 
   /** POST /complaints — student submits */
@@ -44,11 +42,9 @@ const API = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, description, userId })
     });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err || 'Failed to submit complaint');
-    }
-    return res.json();
+    const text = await res.text();
+    if (!res.ok) throw new Error(text || 'Failed to submit complaint');
+    return text;
   },
 
   /** GET /complaints/user/{id} — student's own complaints */
@@ -72,10 +68,8 @@ const API = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err || 'Failed to update status');
-    }
-    return res.json();
+    const text = await res.text();
+    if (!res.ok) throw new Error(text || 'Failed to update status');
+    return text;
   }
 };

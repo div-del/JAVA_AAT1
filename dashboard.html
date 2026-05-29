@@ -24,9 +24,16 @@
     </div>
   </nav>
 
-  <!-- ===== STUDENT VIEW ===== -->
   <main id="studentView" class="hidden">
     <div class="container">
+
+      <!-- Welcome banner -->
+      <div class="welcome-banner">
+        <div>
+          <h2 id="welcomeMsg">👋 Welcome back!</h2>
+          <p>Submit a complaint below or track your existing ones.</p>
+        </div>
+      </div>
 
       <!-- Submit Complaint -->
       <section class="card">
@@ -52,6 +59,8 @@
           <h2>📋 My Complaints</h2>
           <button class="btn-refresh" onclick="loadMyComplaints()">↻ Refresh</button>
         </div>
+        <!-- Summary strip -->
+        <div id="studentSummary" class="summary-strip hidden"></div>
         <div id="myComplaintsLoader" class="loader-wrap">
           <div class="loader"></div>
         </div>

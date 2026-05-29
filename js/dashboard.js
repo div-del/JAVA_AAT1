@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (currentUser.role === 'student') {
     document.getElementById('studentView').classList.remove('hidden');
+    const msg = document.getElementById('welcomeMsg');
+    if (msg) msg.textContent = `👋 Welcome, ${currentUser.name}!`;
     loadMyComplaints();
   } else if (currentUser.role === 'admin') {
     document.getElementById('adminView').classList.remove('hidden');
@@ -82,6 +84,22 @@ async function loadMyComplaints() {
     if (!complaints || complaints.length === 0) {
       empty.classList.remove('hidden');
     } else {
+      // Show summary strip
+      const pending  = complaints.filter(c => c.status === 'Pending'     || c.status === 'PENDING').length;
+      const progress = complaints.filter(c => c.status === 'In Progress' || c.status === 'IN_PROGRESS').length;
+      const resolved = complaints.filter(c => c.status === 'Resolved'    || c.status === 'RESOLVED').length;
+
+      const strip = document.getElementById('studentSummary');
+      if (strip) {
+        strip.innerHTML = `
+          <span class="sum-item sum-total">📋 ${complaints.length} Total</span>
+          <span class="sum-item sum-pending">⏳ ${pending} Pending</span>
+          <span class="sum-item sum-progress">🔧 ${progress} In Progress</span>
+          <span class="sum-item sum-resolved">✅ ${resolved} Resolved</span>
+        `;
+        strip.classList.remove('hidden');
+      }
+
       complaints.forEach((c, i) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
